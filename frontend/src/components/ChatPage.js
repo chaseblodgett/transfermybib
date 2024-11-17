@@ -3,32 +3,51 @@ import { useParams, Link } from "react-router-dom";
 import PostForm from "./PostForm";
 
 function ChatPage() {
-  const { raceId } = useParams(); // Get the raceId from the URL
-  const [posts, setPosts] = useState([]);  // Initially, set posts to an empty array
-  const [loading, setLoading] = useState(true);  // Track loading state
-  
+  const { raceId } = useParams(); 
+  const [posts, setPosts] = useState([]);  
+  const [loading, setLoading] = useState(true);  
+  const [raceName, setRaceName] = useState("");
+
   useEffect(() => {
+    const fetchRaceName = async () => {
+      try {
+        const response = await fetch(`/races/${raceId}`); 
+        const data = await response.json();
+
+        if (data && data.name) {
+          setRaceName(data.name); 
+        } else {
+          console.error("Race data not found or missing 'name' field:", data);
+          setRaceName("Unknown Race");
+        }
+      } catch (error) {
+        console.error("Error fetching race name:", error);
+        setRaceName("Unknown Race");
+      }
+    };
+
     const fetchPosts = async () => {
       try {
         const response = await fetch(`/chat/${raceId}`);
         const data = await response.json();
-        console.log('Fetched data:', data);  // Log the fetched data
+        console.log('Fetched data:', data);  
     
         if (Array.isArray(data)) {
           setPosts(data); 
         } else {
           console.error("Data is not an array:", data);
-          setPosts([]);  // If data is not an array, set posts to an empty array
+          setPosts([]); 
         }
       } catch (error) {
         console.error("Error fetching posts:", error);
-        setPosts([]);  // Set posts to empty array if error occurs
+        setPosts([]);  
       } finally {
         setLoading(false);
       }
     };
-    
-    fetchPosts();  
+
+    fetchRaceName(); 
+    fetchPosts();    
   }, [raceId]);  
 
   const handleNewPost = (newPost) => {
@@ -37,15 +56,15 @@ function ChatPage() {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>{raceId} Marathon Chat</h2>
+      <h2 style={styles.title}>{raceName} Chat</h2>
       <Link to="/" style={styles.backLink}>
         &larr; Back to Home
       </Link>
       <div style={styles.postsContainer}>
         {loading ? (
-          <p>Loading posts...</p>  // Show loading message while fetching data
+          <p>Loading posts...</p>  
         ) : posts.length === 0 ? (
-          <div style={styles.noPostsMessage}>No activity here yet!</div> // Show "No activity" message when there are no posts
+          <div style={styles.noPostsMessage}>No activity here yet!</div> 
         ) : (
           posts.map((post) => (
             <div key={post._id} style={styles.postCard}> 

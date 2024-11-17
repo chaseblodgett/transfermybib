@@ -3,24 +3,24 @@ import React, { useState } from "react";
 function PostForm({ raceId, onNewPost }) {
   const [type, setType] = useState("Selling");
   const [message, setMessage] = useState("");
-  const [name, setName] = useState(""); // New state for user name
-  const [isLoading, setIsLoading] = useState(false); // To track loading state
-  const [error, setError] = useState(""); // To track any errors
+  const [name, setName] = useState(""); 
+  const [isLoading, setIsLoading] = useState(false); 
+  const [error, setError] = useState(""); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Use the entered name, or "Anonymous" if no name is entered
+    
     const newPost = {
       raceId: raceId,
       type,
       message,
-      user: name || "Anonymous", // Default to "Anonymous" if no name is provided
+      user: name || "Anonymous", 
     };
 
     // Set loading state
     setIsLoading(true);
-    setError(""); // Reset error message before each attempt
+    setError(""); 
 
     try {
       // Send a POST request to the server
@@ -36,18 +36,18 @@ function PostForm({ raceId, onNewPost }) {
         throw new Error("Failed to create post");
       }
 
-      // On success, notify the parent component
+      
       const savedPost = await response.json();
       onNewPost(savedPost);
 
-      // Clear form fields after submitting
+      
       setMessage("");
       setName(""); 
     } catch (err) {
       setError("Error creating post. Please try again later.");
-      console.error(err); // Log error for debugging
+      console.error(err);
     } finally {
-      setIsLoading(false); // Stop loading after request finishes
+      setIsLoading(false); 
     }
   };
 

@@ -22,15 +22,34 @@ const postSchema = new mongoose.Schema({
     user: String,
     type: String, 
     message: String,
-  });
+  }, { collection: 'posts' });
 
+const raceSchema = new mongoose.Schema({
+  raceId: { type: Number, required: true }, 
+  name : String,
+  location : String
+}, { collection: 'races' })
 
 const Post = mongoose.model('Post', postSchema);
+const Race = mongoose.model('Race', raceSchema);
 
-module.exports = Post;
+module.exports = { Post, Race };
+
 
 app.get('/', (req, res) => {
   res.send('Bib Transfer API Running');
+});
+
+app.get('/races', async (req, res) => {
+  try {
+    
+    const races = await Race.find();
+    res.json(races);
+    
+  } catch (err) {
+    
+    res.status(500).json({ message: 'Error fetching races', error: err });
+  }
 });
 
 app.get('/chat/:raceId', async (req, res) => {
@@ -56,6 +75,21 @@ app.post("/posts", async (req, res) => {
       res.status(500).json({ message: "Error saving post" });
     }
 });
+
+app.get('/races/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const race = await Race.findOne({ raceId: Number(id) }); 
+    if (race) {
+      res.json(race);
+    } else {
+      res.status(404).json({ error: "Race not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 
 
 

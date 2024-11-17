@@ -1,44 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-// Expanded list of races (add more races for demonstration)
-const races = [
-  { id: 1, name: "TCS New York City Marathon + Dash to the Finish Line 5K", location: "New York City, NY" },
-  { id: 2, name: "Bank of America Chicago Marathon + 5K", location: "Chicago, IL" },
-  { id: 3, name: "Walt Disney World Marathon Weekend", location: "Lake Buena Vista, FL" },
-  { id: 4, name: "AJC Peachtree Road Race", location: "Atlanta, GA" },
-  { id: 5, name: "Boston Marathon + BAA 5K", location: "Boston, MA" },
-  { id: 6, name: "Bolder Boulder", location: "Boulder, CO" },
-  { id: 7, name: "Flying Pig Marathon Weekend", location: "Cincinnati, OH" },
-  { id: 8, name: "Philadelphia Marathon, Half Marathon, and Rothman Institute 8K", location: "Philadelphia, PA" },
-  { id: 9, name: "Blue Cross Broad Street Run", location: "Philadelphia, PA" },
-  { id: 10, name: "Disney Princess Half Marathon", location: "Orlando, FL" },
-  { id: 11, name: "Hot Chocolate Run – Chicago", location: "Chicago, IL" },
-  { id: 12, name: "Lilac Bloomsday Run", location: "Spokane, WA" },
-  { id: 13, name: "Wine & Dine Half Marathon Weekend", location: "Orlando, FL" },
-  { id: 14, name: "RBC Brooklyn Half Marathon", location: "Brooklyn, NY" },
-  { id: 15, name: "United Airlines NYC Half", location: "New York, NY" },
-  { id: 16, name: "Honolulu Marathon", location: "Honolulu, HI" },
-  { id: 17, name: "Pittsburgh Marathon", location: "Pittsburgh, PA" },
-  { id: 18, name: "Chevron Houston Marathon / Aramco Half Marathon / ABB 5K", location: "Houston, TX" },
-  { id: 19, name: "Credit Union Cherry Blossom Ten Mile", location: "Washington, DC" },
-  { id: 20, name: "Cooper River Bridge Run", location: "Charleston, SC" },
-  
-];
-
 function HomePage() {
+  const [races, setRaces] = useState([]);  
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  useEffect(() => {
+    
+
+    const fetchRaces = async () => {
+      try {
+        const response = await fetch("/races"); 
+        const data = await response.json(); 
+        setRaces(data);  
+        if (Array.isArray(data)) {
+          setRaces(data);  
+        } else {
+          console.error("Fetched data is not an array:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching races:", error);
+      }
+    };
+
+    fetchRaces();
+  }, []); 
 
   const filteredRaces = races.filter((race) =>
     race.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Calculate the total pages
+
   const totalPages = Math.ceil(filteredRaces.length / itemsPerPage);
 
-  // Get the races to display based on the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentRaces = filteredRaces.slice(startIndex, startIndex + itemsPerPage);
 
@@ -73,17 +69,16 @@ function HomePage() {
       
       <ul style={styles.raceList}>
         {currentRaces.map((race) => (
-          <li key={race.id} style={styles.raceItem}>
-            <Link to={`/chat/${race.id}`} style={styles.raceLink}>
+          <li key={race.raceId} style={styles.raceItem}>
+            <Link to={`/chat/${race.raceId}`} style={styles.raceLink}>
               {race.name}
             </Link>
-            {/* Displaying the location */}
             <div style={styles.location}>{race.location}</div>
           </li>
         ))}
       </ul>
 
-      {/* Pagination Controls */}
+      {}
       <div style={styles.paginationContainer}>
         <button
           onClick={handlePrevPage}
@@ -168,13 +163,6 @@ const styles = {
     margin: "0px 20px 10px", 
     fontStyle: "italic",
   },
-  raceItemHover: {
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  },
-  raceLinkHover: {
-    backgroundColor: "#007bff",
-    color: "#fff",
-  },
   paginationContainer: {
     display: "flex",
     justifyContent: "center",
@@ -197,6 +185,5 @@ const styles = {
     fontWeight: "bold",
   },
 };
-
 
 export default HomePage;
