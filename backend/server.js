@@ -18,11 +18,12 @@ mongoose
 
 const postSchema = new mongoose.Schema({
     raceId: { type: Number, required: true }, 
-    raceName : String,
+    raceName: String,
     user: String,
     type: String, 
     message: String,
   }, { collection: 'posts' });
+  
 
 const raceSchema = new mongoose.Schema({
   raceId: { type: Number, required: true }, 
@@ -30,15 +31,41 @@ const raceSchema = new mongoose.Schema({
   location : String
 }, { collection: 'races' })
 
+const replySchema = new mongoose.Schema({
+  postId: { type: String, required: true },
+  user: String,
+  message: String
+}, {collection : 'replies' });
+
+
 const Post = mongoose.model('Post', postSchema);
 const Race = mongoose.model('Race', raceSchema);
+const Reply = mongoose.model('Reply', replySchema);
 
-module.exports = { Post, Race };
+module.exports = { Post, Race, Reply };
 
 
 app.get('/', (req, res) => {
   res.send('Bib Transfer API Running');
 });
+
+
+app.get('/chat/:raceId/thread/:postId', async (req, res) => {
+  const { raceId, postId } = req.params; 
+  
+  try {
+    const post = await Post.findOne({ _id: postId, raceId: raceId }); 
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found or does not belong to this race' });
+    }
+    const replies = await Reply.find({ postId: post._id }); 
+    res.json({ post, replies }); 
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching post or replies', error });
+  }
+});
+
+
 
 app.get('/races', async (req, res) => {
   try {
@@ -52,6 +79,18 @@ app.get('/races', async (req, res) => {
   }
 });
 
+app.post('/replies/:postId', async (req, res) => {
+  const { postId, user, message } = req.body;
+  const newReply = new Reply({ postId, user, message });
+
+  try {
+    const savedPost = await newReply.save();
+    res.status(201).json(savedPost);
+  } catch (error) {
+    res.status(500).json({ message: "Error saving reply" });
+  }
+});
+
 app.get('/chat/:raceId', async (req, res) => {
     const { raceId } = req.params;
   
@@ -61,6 +100,18 @@ app.get('/chat/:raceId', async (req, res) => {
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Unable to fetch posts" });
+    }
+  });
+
+  app.get('/replies/:postId', async (req, res) => {
+    const { postId } = req.params;
+  
+    try {
+      const replies = await Reply.find({ postId: postId });
+      res.json(replies);  
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Unable to fetch replies" });
     }
   });
   
@@ -89,8 +140,6 @@ app.get('/races/:id', async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
-
 
 
 app.listen(PORT, () => {

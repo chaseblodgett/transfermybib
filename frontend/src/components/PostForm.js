@@ -10,7 +10,6 @@ function PostForm({ raceId, onNewPost }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
     const newPost = {
       raceId: raceId,
       type,
@@ -18,12 +17,11 @@ function PostForm({ raceId, onNewPost }) {
       user: name || "Anonymous", 
     };
 
-    // Set loading state
     setIsLoading(true);
     setError(""); 
 
     try {
-      // Send a POST request to the server
+    
       const response = await fetch("/posts", {
         method: "POST",
         headers: {
@@ -36,11 +34,9 @@ function PostForm({ raceId, onNewPost }) {
         throw new Error("Failed to create post");
       }
 
-      
       const savedPost = await response.json();
       onNewPost(savedPost);
 
-      
       setMessage("");
       setName(""); 
     } catch (err) {
@@ -55,32 +51,6 @@ function PostForm({ raceId, onNewPost }) {
     <form onSubmit={handleSubmit} style={styles.form}>
       <div style={styles.formGroup}>
         <label style={styles.label}>
-          Name:
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            placeholder="Enter your name"
-            style={styles.input}
-          />
-        </label>
-      </div>
-      <div style={styles.formGroup}>
-        <label style={styles.label}>
-          Type:
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            style={styles.select}
-          >
-            <option value="Selling">Selling</option>
-            <option value="Buying">Buying</option>
-          </select>
-        </label>
-      </div>
-      <div style={styles.formGroup}>
-        <label style={styles.label}>
           Message:
           <textarea
             value={message}
@@ -90,6 +60,37 @@ function PostForm({ raceId, onNewPost }) {
           />
         </label>
       </div>
+      
+      <div style={styles.formGroupRow}>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>
+            Name:
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              placeholder="Enter your name"
+              style={styles.input}
+            />
+          </label>
+        </div>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>
+            Type:
+            <select
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              style={styles.select}
+            >
+              <option value="Selling">Selling</option>
+              <option value="Buying">Buying</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
       {error && <p style={styles.error}>{error}</p>} {/* Show error message if any */}
       <button type="submit" style={styles.button} disabled={isLoading}>
         {isLoading ? "Posting..." : "Post"} {/* Show loading state */}
@@ -111,6 +112,11 @@ const styles = {
   formGroup: {
     marginBottom: "15px",
     textAlign: "left",
+  },
+  formGroupRow: {
+    display: "flex",
+    justifyContent: "space-around",  // Space between Name and Type
+    gap: "5px",
   },
   label: {
     display: "block",

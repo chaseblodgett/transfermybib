@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import PostForm from "./PostForm";
+import PostReplies from "./PostReplies";
 
 function ChatPage() {
-  const { raceId } = useParams(); 
-  const [posts, setPosts] = useState([]);  
-  const [loading, setLoading] = useState(true);  
+  const { raceId } = useParams();
+  const [posts, setPosts] = useState([]);
+  const [replies, setReplies] = useState({});
+  const [loading, setLoading] = useState(true);
   const [raceName, setRaceName] = useState("");
 
   useEffect(() => {
     const fetchRaceName = async () => {
       try {
-        const response = await fetch(`/races/${raceId}`); 
+        const response = await fetch(`/races/${raceId}`);
         const data = await response.json();
-
-        if (data && data.name) {
-          setRaceName(data.name); 
-        } else {
-          console.error("Race data not found or missing 'name' field:", data);
-          setRaceName("Unknown Race");
-        }
+        setRaceName(data.name || "Unknown Race");
       } catch (error) {
         console.error("Error fetching race name:", error);
         setRaceName("Unknown Race");
@@ -30,28 +26,47 @@ function ChatPage() {
       try {
         const response = await fetch(`/chat/${raceId}`);
         const data = await response.json();
-        console.log('Fetched data:', data);  
-    
-        if (Array.isArray(data)) {
-          setPosts(data); 
-        } else {
-          console.error("Data is not an array:", data);
-          setPosts([]); 
-        }
+        setPosts(data || []);
       } catch (error) {
         console.error("Error fetching posts:", error);
-        setPosts([]);  
+        setPosts([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchRaceName(); 
-    fetchPosts();    
-  }, [raceId]);  
+    fetchRaceName();
+    fetchPosts();
+  }, [raceId]);
+
+  // Fetch replies for each post
+  useEffect(() => {
+    const fetchReplies = async () => {
+      try {
+        const repliesData = await Promise.all(
+          posts.map(async (post) => {
+            const response = await fetch(`/replies/${post._id}`);
+            const data = await response.json();
+            return { postId: post._id, replies: data.slice(0, 2) }; // Only get the first 2 replies
+          })
+        );
+        const repliesMap = repliesData.reduce((acc, { postId, replies }) => {
+          acc[postId] = replies;
+          return acc;
+        }, {});
+        setReplies(repliesMap);
+      } catch (error) {
+        console.error("Error fetching replies:", error);
+      }
+    };
+
+    if (posts.length > 0) {
+      fetchReplies();
+    }
+  }, [posts]);
 
   const handleNewPost = (newPost) => {
-    setPosts([...posts, newPost]); 
+    setPosts((prevPosts) => [...prevPosts, newPost]);
   };
 
   return (
@@ -62,16 +77,24 @@ function ChatPage() {
       </Link>
       <div style={styles.postsContainer}>
         {loading ? (
-          <p>Loading posts...</p>  
+          <p>Loading posts...</p>
         ) : posts.length === 0 ? (
-          <div style={styles.noPostsMessage}>No activity here yet!</div> 
+          <div style={styles.noPostsMessage}>No activity here yet!</div>
         ) : (
           posts.map((post) => (
-            <div key={post._id} style={styles.postCard}> 
-              <strong style={styles.postType}>{post.type}</strong>
-              <p style={styles.postMessage}>{post.message}</p>
-              <span style={styles.postUser}>- {post.user}</span>
-            </div>
+            <Link 
+              key={post._id} 
+              to={`/chat/${raceId}/thread/${post._id}`}
+              style={styles.postLink}
+            >
+              <div style={styles.postCard}>
+                <strong style={styles.postType}>{post.type}</strong>
+                <p style={styles.postMessage}>{post.message}</p>
+                <span style={styles.postUser}>- {post.user}</span>
+                {/* Display first two replies for each post */}
+                <PostReplies replies={replies[post._id] || []} />
+              </div>
+            </Link>
           ))
         )}
       </div>
@@ -134,12 +157,16 @@ const styles = {
   noPostsMessage: {
     fontSize: "1.2rem",
     fontWeight: "bold",
-    color: "#ff9900",  
+    color: "#ff9900",
     textAlign: "center",
     padding: "20px",
-    backgroundColor: "#f8f9fa",  
+    backgroundColor: "#f8f9fa",
     border: "1px solid #ddd",
     borderRadius: "8px",
+  },
+  postLink: {
+    textDecoration: "none",  // Remove underline from the link
+    color: "inherit",  // Inherit the text color
   },
 };
 

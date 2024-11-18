@@ -5,7 +5,7 @@ function HomePage() {
   const [races, setRaces] = useState([]);  
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 15;
 
   useEffect(() => {
     
@@ -38,7 +38,7 @@ function HomePage() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentRaces = filteredRaces.slice(startIndex, startIndex + itemsPerPage);
 
-  // Handle page changes
+  
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -53,14 +53,12 @@ function HomePage() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Bib Transfer Portal</h1>
-      <p style={styles.subtitle}>Find or transfer bibs for popular races below:</p>
-      
-      {/* Search input */}
+      <h1 style={styles.title}>TRANSFER MY BIB</h1>
+      <p style={styles.subtitle}>Find or transfer bibs for popular races</p>
       <div style={styles.searchContainer}>
         <input
           type="text"
-          placeholder="Search for a marathon..."
+          placeholder="Search for a race..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           style={styles.searchInput}
@@ -108,19 +106,21 @@ const styles = {
     maxWidth: "800px",
     margin: "0 auto",
     textAlign: "center",
-    fontFamily: "'Arial', sans-serif",
-    color: "#333",
+    fontFamily: "'Courier New', sans-serif",
+    color: "#b3b4bd", 
     lineHeight: 1.6,
+    backgroundColor: "#ede8f5", 
   },
   title: {
     fontSize: "2.5rem",
     fontWeight: "bold",
     marginBottom: "10px",
+    color: "#153075", // Bright blue color for titles
   },
   subtitle: {
     fontSize: "1.2rem",
     marginBottom: "30px",
-    color: "#666",
+    color: "#2453cc", // Subtle light gray
   },
   searchContainer: {
     marginBottom: "20px",
@@ -130,7 +130,10 @@ const styles = {
     padding: "10px",
     fontSize: "1rem",
     borderRadius: "5px",
-    border: "1px solid #ccc",
+    border: "1px solid #b3b4bd", // Dark border
+    backgroundColor: "#ADBBDA", // Darker input background
+    fontFamily: "'Courier New', sans-serif",
+    color: "#050c1d", 
     marginBottom: "20px",
   },
   raceList: {
@@ -141,26 +144,33 @@ const styles = {
     gap: "15px",
   },
   raceItem: {
-    backgroundColor: "#f8f9fa",
-    border: "1px solid #ddd",
+    backgroundColor: "#3d52a0", // Darker background for list items
+    border: "1px solid #2C2E3a", // Subtle border
     borderRadius: "8px",
     transition: "box-shadow 0.3s ease",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)", // Add depth
+    margin: "5px"
   },
   raceLink: {
     display: "block",
     textDecoration: "none",
-    color: "#007bff",
+    color: "#FFFFFF", // Bright blue for links
     fontSize: "1.2rem",
     fontWeight: "500",
     padding: "10px 15px",
     borderRadius: "8px",
     margin: "0px 0px 0px",
     transition: "background-color 0.3s ease, color 0.3s ease",
+    backgroundColor: "transparent", // Transparent by default
+    '&:hover': {
+      backgroundColor: '#0a21c0', // Bright blue background on hover
+      color: '#fff', // White text on hover
+    },
   },
   location: {
     fontSize: "1rem",
-    color: "#666",
-    margin: "0px 20px 10px", 
+    color: "#cbd2e5", // Light gray for location text
+    margin: "0px 20px 10px",
     fontStyle: "italic",
   },
   paginationContainer: {
@@ -172,18 +182,26 @@ const styles = {
     padding: "10px 15px",
     fontSize: "1rem",
     margin: "0 10px",
-    border: "1px solid #007bff",
+    border: "1px solid #0a21c0", // Bright blue border
     borderRadius: "5px",
     cursor: "pointer",
-    backgroundColor: "#fff",
-    color: "#007bff",
+    backgroundColor: "#eaeaec", // Dark background for buttons
+    color: "#0a21c0", // Bright blue text
     transition: "background-color 0.3s, color 0.3s",
+    '&:hover': {
+      backgroundColor: '#0a21c0', // Bright blue background on hover
+      color: '#141619', // Dark text on hover
+    },
   },
   pageNumber: {
     alignSelf: "center",
     fontSize: "1rem",
     fontWeight: "bold",
+    color: "#b3b4bd", // Light text for page number
   },
+
+  
 };
+
 
 export default HomePage;
