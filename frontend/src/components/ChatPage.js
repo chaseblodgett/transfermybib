@@ -9,6 +9,7 @@ function ChatPage() {
   const [replies, setReplies] = useState({});
   const [loading, setLoading] = useState(true);
   const [raceName, setRaceName] = useState("");
+  const [showPostForm, setShowPostForm] = useState(false); 
 
   useEffect(() => {
     const fetchRaceName = async () => {
@@ -67,6 +68,11 @@ function ChatPage() {
 
   const handleNewPost = (newPost) => {
     setPosts((prevPosts) => [...prevPosts, newPost]);
+    setShowPostForm(false); // Hide the PostForm after a post is created
+  };
+
+  const refreshParentState = () => {
+    setShowPostForm(false); // Hide the post form
   };
 
   return (
@@ -75,6 +81,7 @@ function ChatPage() {
       <Link to="/" style={styles.backLink}>
         &larr; Back to Home
       </Link>
+      
       <div style={styles.postsContainer}>
         {loading ? (
           <p>Loading posts...</p>
@@ -91,6 +98,7 @@ function ChatPage() {
                 <strong style={styles.postType}>{post.type}</strong>
                 <p style={styles.postMessage}>{post.message}</p>
                 <span style={styles.postUser}>- {post.user}</span>
+                <span style={styles.postTimestamp}>{new Date(post.createdAt).toLocaleString()}</span>
                 {/* Display first two replies for each post */}
                 <PostReplies replies={replies[post._id] || []} />
               </div>
@@ -98,7 +106,19 @@ function ChatPage() {
           ))
         )}
       </div>
-      <PostForm raceId={Number(raceId)} onNewPost={handleNewPost} />
+
+      {!showPostForm && ( // Only show the New Post button if the form isn't visible
+        <button 
+          style={styles.newPostButton} 
+          onClick={() => setShowPostForm(true)} // Show the form when clicked
+        >
+          New Post
+        </button>
+      )}
+
+      {showPostForm && ( // Display the PostForm when showPostForm is true
+        <PostForm raceId={Number(raceId)} onNewPost={handleNewPost} onCancel={refreshParentState} />
+      )}
     </div>
   );
 }
@@ -108,7 +128,6 @@ const styles = {
     padding: "40px 20px",
     maxWidth: "800px",
     margin: "0 auto",
-    fontFamily: "'Arial', sans-serif",
     color: "#333",
     lineHeight: 1.6,
   },
@@ -126,6 +145,18 @@ const styles = {
     marginBottom: "30px",
     transition: "color 0.3s ease",
     textAlign: "center",
+  },
+  newPostButton: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    marginBottom: "20px",
+    width: "100%", // Span the full width of the container
+    transition: "background-color 0.3s ease",
   },
   postsContainer: {
     marginTop: "20px",
@@ -165,8 +196,13 @@ const styles = {
     borderRadius: "8px",
   },
   postLink: {
-    textDecoration: "none",  // Remove underline from the link
-    color: "inherit",  // Inherit the text color
+    textDecoration: "none",
+    color: "inherit",
+  },
+  postTimestamp: {
+    fontSize: "0.8rem",
+    color: "#888",
+    marginLeft: "10px",
   },
 };
 

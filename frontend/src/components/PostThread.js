@@ -52,9 +52,10 @@ const styles = {
     padding: "40px 20px",
     maxWidth: "800px",
     margin: "0 auto",
-    fontFamily: "'Arial', sans-serif",
+    // fontFamily: "'Arial', sans-serif",
     color: "#333",
     lineHeight: 1.6,
+    
   },
   title: {
     fontSize: "2rem",

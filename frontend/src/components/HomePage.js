@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+// // Import the favicon if it’s in the src folder
+// import favicon from './path-to-your-favicon/favicon.ico';
+
 function HomePage() {
   const [races, setRaces] = useState([]);  
   const [searchQuery, setSearchQuery] = useState("");
@@ -8,8 +11,6 @@ function HomePage() {
   const itemsPerPage = 15;
 
   useEffect(() => {
-    
-
     const fetchRaces = async () => {
       try {
         const response = await fetch("/races"); 
@@ -32,13 +33,10 @@ function HomePage() {
     race.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-
   const totalPages = Math.ceil(filteredRaces.length / itemsPerPage);
-
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentRaces = filteredRaces.slice(startIndex, startIndex + itemsPerPage);
 
-  
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -53,7 +51,11 @@ function HomePage() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>TRANSFER MY BIB</h1>
+      {/* Updated Title Section */}
+      <h1 style={styles.title}>
+        TRANSFER MY BIB
+        <img src="/favicon.png" alt="favicon" style={styles.favicon} />
+      </h1>
       <p style={styles.subtitle}>Find or transfer bibs for popular races</p>
       <div style={styles.searchContainer}>
         <input
@@ -76,7 +78,6 @@ function HomePage() {
         ))}
       </ul>
 
-      {}
       <div style={styles.paginationContainer}>
         <button
           onClick={handlePrevPage}
@@ -106,7 +107,6 @@ const styles = {
     maxWidth: "800px",
     margin: "0 auto",
     textAlign: "center",
-    fontFamily: "'Courier New', sans-serif",
     color: "#b3b4bd", 
     lineHeight: 1.6,
     backgroundColor: "#ede8f5", 
@@ -115,12 +115,20 @@ const styles = {
     fontSize: "2.5rem",
     fontWeight: "bold",
     marginBottom: "10px",
-    color: "#153075", // Bright blue color for titles
+    color: "#153075",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "10px", // Space between text and image
+  },
+  favicon: {
+    width: "32px", // Adjust the size as needed
+    height: "32px",
   },
   subtitle: {
     fontSize: "1.2rem",
     marginBottom: "30px",
-    color: "#2453cc", // Subtle light gray
+    color: "#2453cc",
   },
   searchContainer: {
     marginBottom: "20px",
@@ -130,9 +138,8 @@ const styles = {
     padding: "10px",
     fontSize: "1rem",
     borderRadius: "5px",
-    border: "1px solid #b3b4bd", // Dark border
-    backgroundColor: "#ADBBDA", // Darker input background
-    fontFamily: "'Courier New', sans-serif",
+    border: "1px solid #b3b4bd", 
+    backgroundColor: "#ADBBDA", 
     color: "#050c1d", 
     marginBottom: "20px",
   },
@@ -144,33 +151,28 @@ const styles = {
     gap: "15px",
   },
   raceItem: {
-    backgroundColor: "#3d52a0", // Darker background for list items
-    border: "1px solid #2C2E3a", // Subtle border
+    backgroundColor: "#3d52a0",
+    border: "1px solid #2C2E3a",
     borderRadius: "8px",
     transition: "box-shadow 0.3s ease",
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)", // Add depth
-    margin: "5px"
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+    margin: "3px",
   },
   raceLink: {
     display: "block",
     textDecoration: "none",
-    color: "#FFFFFF", // Bright blue for links
+    color: "#FFFFFF",
     fontSize: "1.2rem",
     fontWeight: "500",
     padding: "10px 15px",
     borderRadius: "8px",
     margin: "0px 0px 0px",
     transition: "background-color 0.3s ease, color 0.3s ease",
-    backgroundColor: "transparent", // Transparent by default
-    '&:hover': {
-      backgroundColor: '#0a21c0', // Bright blue background on hover
-      color: '#fff', // White text on hover
-    },
   },
   location: {
     fontSize: "1rem",
-    color: "#cbd2e5", // Light gray for location text
-    margin: "0px 20px 10px",
+    color: "#cbd2e5",
+    margin: "0px 0px 5px",
     fontStyle: "italic",
   },
   paginationContainer: {
@@ -182,26 +184,19 @@ const styles = {
     padding: "10px 15px",
     fontSize: "1rem",
     margin: "0 10px",
-    border: "1px solid #0a21c0", // Bright blue border
+    border: "1px solid #0a21c0",
     borderRadius: "5px",
     cursor: "pointer",
-    backgroundColor: "#eaeaec", // Dark background for buttons
-    color: "#0a21c0", // Bright blue text
+    backgroundColor: "#eaeaec",
+    color: "#0a21c0",
     transition: "background-color 0.3s, color 0.3s",
-    '&:hover': {
-      backgroundColor: '#0a21c0', // Bright blue background on hover
-      color: '#141619', // Dark text on hover
-    },
   },
   pageNumber: {
     alignSelf: "center",
     fontSize: "1rem",
     fontWeight: "bold",
-    color: "#b3b4bd", // Light text for page number
+    color: "#b3b4bd",
   },
-
-  
 };
-
 
 export default HomePage;

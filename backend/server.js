@@ -22,7 +22,7 @@ const postSchema = new mongoose.Schema({
     user: String,
     type: String, 
     message: String,
-  }, { collection: 'posts' });
+  }, { collection: 'posts' , timestamps: true});
   
 
 const raceSchema = new mongoose.Schema({
@@ -35,7 +35,7 @@ const replySchema = new mongoose.Schema({
   postId: { type: String, required: true },
   user: String,
   message: String
-}, {collection : 'replies' });
+}, {collection : 'replies' , timestamps: true});
 
 
 const Post = mongoose.model('Post', postSchema);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function PostForm({ raceId, onNewPost }) {
+function PostForm({ raceId, onNewPost, onCancel }) {
   const [type, setType] = useState("Selling");
   const [message, setMessage] = useState("");
   const [name, setName] = useState(""); 
@@ -21,7 +21,6 @@ function PostForm({ raceId, onNewPost }) {
     setError(""); 
 
     try {
-    
       const response = await fetch("/posts", {
         method: "POST",
         headers: {
@@ -95,6 +94,14 @@ function PostForm({ raceId, onNewPost }) {
       <button type="submit" style={styles.button} disabled={isLoading}>
         {isLoading ? "Posting..." : "Post"} {/* Show loading state */}
       </button>
+
+      <button 
+        type="button" 
+        style={styles.cancelButton} 
+        onClick={onCancel} // Call the cancel function passed from the parent
+      >
+        Cancel
+      </button>
     </form>
   );
 }
@@ -115,7 +122,7 @@ const styles = {
   },
   formGroupRow: {
     display: "flex",
-    justifyContent: "space-around",  // Space between Name and Type
+    justifyContent: "space-around",  
     gap: "5px",
   },
   label: {
@@ -125,12 +132,14 @@ const styles = {
     marginBottom: "5px",
   },
   input: {
-    width: "100%",
+    width: "calc(100% - 10px)",  // Adjust width to allow space for padding
     padding: "10px",
     fontSize: "1rem",
     border: "1px solid #ccc",
     borderRadius: "5px",
+    marginRight: "5px",
   },
+  
   select: {
     width: "100%",
     padding: "10px",
@@ -157,6 +166,19 @@ const styles = {
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
+    transition: "background-color 0.3s ease",
+  },
+  cancelButton: {
+    display: "block",
+    width: "100%",
+    padding: "10px",
+    fontSize: "1.2rem",
+    color: "#fff",
+    backgroundColor: "#ff0000", // Red background
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginTop: "10px", // Add margin for spacing
     transition: "background-color 0.3s ease",
   },
   error: {

@@ -5,6 +5,7 @@ function Replies({ postId }) {
   const [loadingReplies, setLoadingReplies] = useState(false);
   const [user, setuser] = useState("");
   const [replyMessage, setReplyMessage] = useState("");
+  const [showReplyForm, setShowReplyForm] = useState(false); // Track form visibility
 
   const fetchReplies = async () => {
     setLoadingReplies(true);
@@ -51,6 +52,7 @@ function Replies({ postId }) {
         setReplies((prevReplies) => [...prevReplies, savedReply]);
         setuser("");
         setReplyMessage("");
+        setShowReplyForm(false); // Optionally hide the form after submitting
       } else {
         console.error("Error saving reply:", response.statusText);
       }
@@ -59,11 +61,13 @@ function Replies({ postId }) {
     }
   };
 
+  const formatDateTime = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleString(); // Format the date/time in a readable format
+  };
+
   return (
     <div style={styles.repliesContainer}>
-      <button style={styles.replyButton} onClick={fetchReplies}>
-        Refresh Replies
-      </button>
       {loadingReplies ? (
         <p>Loading replies...</p>
       ) : replies.length === 0 ? (
@@ -72,28 +76,52 @@ function Replies({ postId }) {
         replies.map((reply) => (
           <div key={reply._id} style={styles.replyCard}>
             <p style={styles.replyMessage}>{reply.message}</p>
-            <span style={styles.replyUser}>- {reply.user}</span>
+            <div style={styles.replyMeta}>
+              <span style={styles.replyUser}>{reply.user}</span>
+              {reply.createdAt && (
+                <span style={styles.replyTimestamp}>{formatDateTime(reply.createdAt)}</span>
+              )}
+            </div>
           </div>
         ))
       )}
-      <form onSubmit={handleAddReply} style={styles.replyForm}>
-        <input
-          type="text"
-          placeholder="Your name"
-          value={user}
-          onChange={(e) => setuser(e.target.value)}
-          style={styles.input}
-        />
-        <textarea
-          placeholder="Write a reply..."
-          value={replyMessage}
-          onChange={(e) => setReplyMessage(e.target.value)}
-          style={styles.textarea}
-        />
-        <button type="submit" style={styles.submitButton}>
-          Add Reply
+
+      {!showReplyForm && (
+        <button
+          onClick={() => setShowReplyForm(true)}
+          style={styles.replyButton}
+        >
+          New Reply
         </button>
-      </form>
+      )}
+
+      {showReplyForm && (
+        <form onSubmit={handleAddReply} style={styles.replyForm}>
+          <input
+            type="text"
+            placeholder="Your name"
+            value={user}
+            onChange={(e) => setuser(e.target.value)}
+            style={styles.input}
+          />
+          <textarea
+            placeholder="Write a reply..."
+            value={replyMessage}
+            onChange={(e) => setReplyMessage(e.target.value)}
+            style={styles.textarea}
+          />
+          <button type="submit" style={styles.submitButton}>
+            Add Reply
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowReplyForm(false)}
+            style={styles.cancelButton}
+          >
+            Cancel
+          </button>
+        </form>
+      )}
     </div>
   );
 }
@@ -124,9 +152,20 @@ const styles = {
   replyMessage: {
     margin: "0 0 5px",
   },
-  replyUser: {
+  replyMeta: {
+    display: "flex",
+    justifyContent: "space-between",
     fontSize: "0.9rem",
     color: "#555",
+  },
+  replyUser: {
+    fontWeight: "bold",
+  },
+  replyTimestamp: {
+    fontStyle: "italic",
+    fontSize: "0.8rem",
+    color: "#888",
+    marginLeft: "10px",
   },
   replyForm: {
     display: "flex",
@@ -150,6 +189,14 @@ const styles = {
     background: "#007bff",
     color: "#fff",
     border: "none",
+    padding: "10px",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+  cancelButton: {
+    background: "#f5f5f5",
+    color: "#333",
+    border: "1px solid #ccc",
     padding: "10px",
     borderRadius: "5px",
     cursor: "pointer",
