@@ -47,7 +47,7 @@ function HomePage() {
         Transfer My Bib
         <img src="/favicon.png" alt="favicon" style={styles.favicon} />
       </h1>
-      <p style={styles.subtitle}>Find or transfer bibs for popular races</p>
+      <p style={styles.subtitle}>Buy or sell bibs for popular races</p>
       <div style={styles.searchContainer}>
         <input
           type="text"
