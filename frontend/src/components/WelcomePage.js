@@ -117,8 +117,9 @@ function WelcomePage() {
         marginLeft: "2px",
       },
     favicon: {
-        width: "32px", 
-        height: "32px",
+      width: "40px",
+      height: "40px",
+      marginLeft: "8px"
     },
       
   };

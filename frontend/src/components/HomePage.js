@@ -43,10 +43,10 @@ function HomePage() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>
-        Transfer My Bib
+      <div style={styles.header}>
+        <h1 style={styles.title}>Transfer My Bib</h1>
         <img src="/favicon.png" alt="favicon" style={styles.favicon} />
-      </h1>
+      </div>
       <p style={styles.subtitle}>Buy or sell bibs for popular races</p>
       <div style={styles.searchContainer}>
         <input
@@ -117,9 +117,17 @@ const styles = {
     gap: "10px", // Space between text and image
     fontFamily: "Courier New, monospace",
   },
+  header: {
+    display: "flex", // Use flexbox for the header
+    flexDirection: "row", // Arrange items side by side by default
+    alignItems: "center", // Vertically center the items
+    justifyContent: "center", // Center horizontally
+    gap: "10px", // Space between text and image
+    marginBottom: "20px", // Space below the header
+  },
   favicon: {
-    width: "32px", // Adjust the size as needed
-    height: "32px",
+    width: "50px",
+    height: "50px"
   },
   subtitle: {
     fontSize: "1.2rem",
