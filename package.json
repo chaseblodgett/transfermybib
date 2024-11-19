@@ -2,7 +2,8 @@
   "name": "bib-transfer-app",
   "version": "1.0.0",
   "scripts": {
-    "start": "concurrently \"npm run start --prefix backend\" \"npm run start --prefix frontend\""
+    "start": "node backend/server.js",
+    "heroku-postbuild": "npm install --prefix frontend && npm run build --prefix frontend"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"
