@@ -197,6 +197,19 @@ const styles = {
     fontWeight: "bold",
     color: "#b3b4bd",
   },
+
+  // Media Query for Small Screens
+  '@media (max-width: 768px)': {
+    title: {
+      flexDirection: "column", // Stack title and image vertically
+      gap: "0", // Remove space between text and image
+    },
+    favicon: {
+      width: "24px", // Make image smaller on mobile
+      height: "24px",
+      marginTop: "10px", // Add margin on top to separate from title
+    },
+  },
 };
 
 const fadeIn = `
@@ -211,5 +224,6 @@ const fadeIn = `
 `;
 
 document.styleSheets[0].insertRule(fadeIn, document.styleSheets[0].cssRules.length);
+
 
 export default HomePage;
