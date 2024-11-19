@@ -78,7 +78,7 @@ function ChatPage() {
   return (
     <div style={styles.container}>
       <h2 style={styles.title}>{raceName} Chat</h2>
-      <Link to="/" style={styles.backLink}>
+      <Link to="/home" style={styles.backLink}>
         &larr; Back to Home
       </Link>
       
@@ -130,25 +130,27 @@ const styles = {
     margin: "0 auto",
     color: "#333",
     lineHeight: 1.6,
+    // backgroundColor: "#D5D5D5"
   },
   title: {
     fontSize: "2rem",
     fontWeight: "bold",
     marginBottom: "20px",
     textAlign: "center",
+    color: "#A5CBC3"
   },
   backLink: {
     display: "block",
     textDecoration: "none",
-    color: "#007bff",
+    color: "#A5CBC3",
     fontSize: "1rem",
     marginBottom: "30px",
     transition: "color 0.3s ease",
     textAlign: "center",
   },
   newPostButton: {
-    backgroundColor: "#007bff",
-    color: "#fff",
+    backgroundColor: "#A5CBC3",
+    color: "#353839",
     border: "none",
     padding: "10px 20px",
     borderRadius: "5px",
@@ -164,9 +166,11 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "15px",
+    backgroundColor: "#D5D5D5",
+    borderRadius: "5px",
   },
   postCard: {
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "#D5D5D5",
     border: "1px solid #ddd",
     borderRadius: "8px",
     padding: "15px",
@@ -188,12 +192,12 @@ const styles = {
   noPostsMessage: {
     fontSize: "1.2rem",
     fontWeight: "bold",
-    color: "#ff9900",
+    color: "#536662",
     textAlign: "center",
     padding: "20px",
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "#D5D5D5",
     border: "1px solid #ddd",
-    borderRadius: "8px",
+    borderRadius: "12px",
   },
   postLink: {
     textDecoration: "none",

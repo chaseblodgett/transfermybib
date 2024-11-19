@@ -1,0 +1,4 @@
+Background (Black): 100B00
+Text: 85CB33
+Text accent: 7AAC38
+Race Cells: A5CBC3

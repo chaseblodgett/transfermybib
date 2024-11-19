@@ -135,13 +135,14 @@ const styles = {
     gap: "10px",
   },
   replyButton: {
-    marginBottom: "10px",
-    background: "#007bff",
-    color: "#fff",
+    marginBottom: "5px",
+    backgroundColor: "#A5CBC3",
+    color: "#353839",
     border: "none",
-    padding: "5px 10px",
+    padding: "5px 5px",
     borderRadius: "5px",
     cursor: "pointer",
+    height: "100%"
   },
   replyCard: {
     backgroundColor: "#e9ecef",
@@ -168,6 +169,7 @@ const styles = {
     marginLeft: "10px",
   },
   replyForm: {
+    margin: "20px 5px",
     display: "flex",
     flexDirection: "column",
     gap: "10px",
@@ -186,16 +188,16 @@ const styles = {
     minHeight: "80px",
   },
   submitButton: {
-    background: "#007bff",
-    color: "#fff",
+    backgroundColor: "#A5CBC3",
+    color: "#353839",
     border: "none",
     padding: "10px",
     borderRadius: "5px",
     cursor: "pointer",
   },
   cancelButton: {
-    background: "#f5f5f5",
-    color: "#333",
+    color: "#A5CBC3",
+    backgroundColor: "#353839",
     border: "1px solid #ccc",
     padding: "10px",
     borderRadius: "5px",

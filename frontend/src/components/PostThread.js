@@ -53,7 +53,7 @@ const styles = {
     maxWidth: "800px",
     margin: "0 auto",
     // fontFamily: "'Arial', sans-serif",
-    color: "#333",
+    // color: "#A5CBC3",
     lineHeight: 1.6,
     
   },
@@ -61,19 +61,21 @@ const styles = {
     fontSize: "2rem",
     fontWeight: "bold",
     marginBottom: "20px",
+    color: "#A5CBC3"
   },
   message: {
     fontSize: "1rem",
     marginBottom: "20px",
+    color: "#D2E5E1"
   },
   user: {
     fontSize: "1rem",
-    color: "#555",
+    color: "#94B6AF",
   },
   backLink: {
     display: "block",
     textDecoration: "none",
-    color: "#007bff",
+    color: "#A5CBC3",
     fontSize: "1rem",
     marginTop: "20px",
     transition: "color 0.3s ease",

@@ -6,7 +6,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #ede8f5; 
+  background-color: #353839; 
   font-family: 'Helvetica', 'Arial', sans-serif;
 }
 
@@ -20,6 +20,16 @@ html, body {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
 
 .App-header {
   background-color: #282c34;
@@ -43,4 +53,8 @@ html, body {
   to {
     transform: rotate(360deg);
   }
+}
+
+input, textarea{
+  outline: none;
 }

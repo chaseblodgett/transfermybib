@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-// // Import the favicon if it’s in the src folder
-// import favicon from './path-to-your-favicon/favicon.ico';
-
 function HomePage() {
-  const [races, setRaces] = useState([]);  
+  const [races, setRaces] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
@@ -13,21 +10,16 @@ function HomePage() {
   useEffect(() => {
     const fetchRaces = async () => {
       try {
-        const response = await fetch("/races"); 
-        const data = await response.json(); 
-        setRaces(data);  
-        if (Array.isArray(data)) {
-          setRaces(data);  
-        } else {
-          console.error("Fetched data is not an array:", data);
-        }
+        const response = await fetch("/races");
+        const data = await response.json();
+        setRaces(data);
       } catch (error) {
         console.error("Error fetching races:", error);
       }
     };
 
     fetchRaces();
-  }, []); 
+  }, []);
 
   const filteredRaces = races.filter((race) =>
     race.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -51,9 +43,8 @@ function HomePage() {
 
   return (
     <div style={styles.container}>
-      {/* Updated Title Section */}
       <h1 style={styles.title}>
-        TRANSFER MY BIB
+        Transfer My Bib
         <img src="/favicon.png" alt="favicon" style={styles.favicon} />
       </h1>
       <p style={styles.subtitle}>Find or transfer bibs for popular races</p>
@@ -66,10 +57,13 @@ function HomePage() {
           style={styles.searchInput}
         />
       </div>
-      
+
       <ul style={styles.raceList}>
-        {currentRaces.map((race) => (
-          <li key={race.raceId} style={styles.raceItem}>
+        {currentRaces.map((race, index) => (
+          <li
+            key={race.raceId}
+            style={{ ...styles.raceItem, animationDelay: `${index * 0.1}s` }} // Delay based on the index
+          >
             <Link to={`/chat/${race.raceId}`} style={styles.raceLink}>
               {race.name}
             </Link>
@@ -107,15 +101,15 @@ const styles = {
     maxWidth: "800px",
     margin: "0 auto",
     textAlign: "center",
-    color: "#b3b4bd", 
+    color: "#b3b4bd",
     lineHeight: 1.6,
-    backgroundColor: "#ede8f5", 
+    backgroundColor: "#353839",
   },
   title: {
     fontSize: "2.5rem",
     fontWeight: "bold",
     marginBottom: "10px",
-    color: "#153075",
+    color: "#A5CBC3",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -128,7 +122,7 @@ const styles = {
   subtitle: {
     fontSize: "1.2rem",
     marginBottom: "30px",
-    color: "#2453cc",
+    color: "#A5CBC3",
   },
   searchContainer: {
     marginBottom: "20px",
@@ -136,11 +130,11 @@ const styles = {
   searchInput: {
     width: "100%",
     padding: "10px",
-    fontSize: "1rem",
+    fontSize: "1.1rem",
     borderRadius: "5px",
-    border: "1px solid #b3b4bd", 
-    backgroundColor: "#ADBBDA", 
-    color: "#050c1d", 
+    border: "1px solid #A5CBC3",
+    backgroundColor: "#353839",
+    color: "#A5CBC3",
     marginBottom: "20px",
   },
   raceList: {
@@ -151,17 +145,19 @@ const styles = {
     gap: "15px",
   },
   raceItem: {
-    backgroundColor: "#3d52a0",
+    backgroundColor: "#A5CBC3",
     border: "1px solid #2C2E3a",
     borderRadius: "8px",
     transition: "box-shadow 0.3s ease",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
     margin: "3px",
+    opacity: 0, // Start with opacity 0 (hidden)
+    animation: "fadeIn 0.5s forwards", // Apply animation
   },
   raceLink: {
     display: "block",
     textDecoration: "none",
-    color: "#FFFFFF",
+    color: "#232b2b",
     fontSize: "1.2rem",
     fontWeight: "500",
     padding: "10px 15px",
@@ -171,7 +167,7 @@ const styles = {
   },
   location: {
     fontSize: "1rem",
-    color: "#cbd2e5",
+    color: "#232b2b",
     margin: "0px 0px 5px",
     fontStyle: "italic",
   },
@@ -184,11 +180,12 @@ const styles = {
     padding: "10px 15px",
     fontSize: "1rem",
     margin: "0 10px",
-    border: "1px solid #0a21c0",
+    border: "0px solid #0a21c0",
     borderRadius: "5px",
     cursor: "pointer",
-    backgroundColor: "#eaeaec",
-    color: "#0a21c0",
+    border: "1px solid #A5CBC3",
+    backgroundColor: "#353839",
+    color: "#A5CBC3",
     transition: "background-color 0.3s, color 0.3s",
   },
   pageNumber: {
@@ -198,5 +195,18 @@ const styles = {
     color: "#b3b4bd",
   },
 };
+
+const fadeIn = `
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
+
+document.styleSheets[0].insertRule(fadeIn, document.styleSheets[0].cssRules.length);
 
 export default HomePage;
