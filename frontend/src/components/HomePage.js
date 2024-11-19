@@ -104,6 +104,7 @@ const styles = {
     color: "#b3b4bd",
     lineHeight: 1.6,
     backgroundColor: "#353839",
+    fontFamily: "Courier New, monospace",
   },
   title: {
     fontSize: "2.5rem",
@@ -114,6 +115,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     gap: "10px", // Space between text and image
+    fontFamily: "Courier New, monospace",
   },
   favicon: {
     width: "32px", // Adjust the size as needed
@@ -123,6 +125,7 @@ const styles = {
     fontSize: "1.2rem",
     marginBottom: "30px",
     color: "#A5CBC3",
+    fontFamily: "Courier New, monospace",
   },
   searchContainer: {
     marginBottom: "20px",

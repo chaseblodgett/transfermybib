@@ -55,6 +55,7 @@ const styles = {
     // fontFamily: "'Arial', sans-serif",
     // color: "#A5CBC3",
     lineHeight: 1.6,
+    fontFamily: "Georgia, serif"
     
   },
   title: {

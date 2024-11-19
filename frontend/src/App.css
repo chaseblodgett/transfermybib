@@ -7,7 +7,7 @@ html, body {
   margin: 0;
   padding: 0;
   background-color: #353839; 
-  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-family: "Courier New", monospace;
 }
 
 .App-logo {

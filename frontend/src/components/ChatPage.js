@@ -131,6 +131,7 @@ const styles = {
     color: "#333",
     lineHeight: 1.6,
     // backgroundColor: "#D5D5D5"
+    fontFamily: "Georgia, serif"
   },
   title: {
     fontSize: "2rem",

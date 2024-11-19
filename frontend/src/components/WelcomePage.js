@@ -71,7 +71,7 @@ function WelcomePage() {
       alignItems: "center",
       height: "100vh",
       backgroundColor: "#353839",
-      // fontFamily: "Arial, sans-serif",
+      fontFamily: "Courier New, monospace !important",
     },
     heading: {
       fontSize: "2.5rem",
@@ -79,6 +79,7 @@ function WelcomePage() {
       textAlign: "center",
       margin: "0 0 20px",
       color: "#A5CBC3",
+      fontFamily: "Courier New, monospace",
     },
     button: {
       display: "flex",
@@ -94,6 +95,7 @@ function WelcomePage() {
       cursor: "pointer",
       textDecoration: "none",
       transition: "background-color 0.3s ease",
+      fontFamily: "Courier New, monospace",
     },
     buttonHover: {
       // backgroundColor: "#8AA9A3",

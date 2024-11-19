@@ -29,6 +29,7 @@ const styles = {
   repliesContainer: {
     marginTop: '10px',
     paddingLeft: '20px',
+    fontFamily: "Georgia, serif"
   },
   replyCard: {
     backgroundColor: '#f1f1f1',

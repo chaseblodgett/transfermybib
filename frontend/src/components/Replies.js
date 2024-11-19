@@ -133,6 +133,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "10px",
+    fontFamily: "Georgia, serif"
   },
   replyButton: {
     marginBottom: "5px",
